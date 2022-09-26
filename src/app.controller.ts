@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 
 import { AuthGuard } from "@nestjs/passport";
@@ -8,6 +8,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @Render('index')
+  indexPage() {
+    return { message : "Hello PrIYMA"};
+  }
+
+  @Get('auth/github/login')
   @UseGuards(AuthGuard('github'))
   async googleAuth(@Req() req) {
   }
