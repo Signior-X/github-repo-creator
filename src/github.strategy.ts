@@ -1,15 +1,16 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, VerifyCallback } from "passport-github";
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
-    constructor() {
+    constructor(private config: ConfigService) {
         super({
-            clientID : "",
-            clientSecret : "",
-            callbackURL: "http://localhost:5000/auth/github/callback",
+            clientID : config.get<string>('GITHUB_CLIENT_ID'),
+            clientSecret : config.get<string>('GITHUB_CLIENT_SECRET'),
+            callbackURL: `${config.get<string>('HOST_URL')}/auth/github/callback`,
 			scope: ['repo'],
         });
     }
