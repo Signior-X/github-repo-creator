@@ -117,14 +117,19 @@
 
             console.log(repoName, repoPrivate);
 
-            const data = {repoName, repoPrivate};
+            const data = { repoName, repoPrivate };
             postData('/api/repos/', data).then(data => {
                 console.log("Data came: ", data);
+
+                return data.json();
+            }).then(jsonData => {
+                console.log("JSON data", jsonData);
 
                 if (data.status == 201) {
                     alert("Repository created");
                 }
-            }).catch(err => {
+            }).
+            catch (err => {
                 console.log("Error came", err);
             })
         }

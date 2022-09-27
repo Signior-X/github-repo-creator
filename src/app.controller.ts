@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Render, Req, Res, UseGuards, Request, Response } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from "@nestjs/passport";
+import { RepoRequest } from './schema/RepoRequest';
 
 @Controller()
 export class AppController {
@@ -24,9 +25,8 @@ export class AppController {
   }
   
   @Post('api/repos')
-  createRepository(@Req() req: Request, @Body() body: Body, @Res() res: Response) {
-    console.log("Hello");
-    return { hello: "world" };
+  async createRepo(@Req() req: Request, @Body() body: RepoRequest): Promise<any> {
+    return await this.appService.createRepository(req, body);
   }
 
   @Get('auth/logout')

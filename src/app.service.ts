@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { RepoRequest } from './schema/RepoRequest';
+import { RepoResponse } from './schema/RepoResponse';
 
 @Injectable()
 export class AppService {
@@ -15,12 +17,10 @@ export class AppService {
     }
   }
 
-  createRepository(req, body) {
-    return body;
-
+  async createRepository(req, body: RepoRequest) : Promise<RepoResponse> {
     console.log("Create a repository", body);
 
-    const accessToken = req.session.accessToken;
+    const accessToken = req.cookies.accessToken;
     console.log("Access Token", accessToken);
 
     const url = "https://api.github.com/user/repos";
@@ -41,20 +41,22 @@ export class AppService {
     let params: RequestInit = {
       headers: headers,
       method: "POSt",
-      body: JSON.stringify(body)
+      body: JSON.stringify(data)
     }
 
-    axios({
+    let result = await axios({
       method: 'post',
       url: url,
       data: data,
       headers: headers
-    }).then(data => {
-      console.log(data);
-      return { success: true, data: data.data };
     }).catch(err => {
-      console.log("Error came", err)
-      return { success: false, err: "Something Went Wrong." }
+      // TODO Handle error properly here
+      console.log(err);
     });
+    
+    const repoResponse = new RepoResponse();
+    repoResponse.status = true;
+    repoResponse.description = "Repo Successfully Created: " + JSON.stringify(data)
+    return repoResponse;
   }
 }
