@@ -17,14 +17,14 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
 
     async validate(accessToken: string, refreshToken: string, profile: any,
         done: VerifyCallback): Promise<any> {
-        console.log("PROFILE GOT", profile);
+
+        console.log("Profile got", profile);
 
         const user = {
-            id: "1"
+            username: profile.username,
+            accessToken: accessToken,
+            avatar_url: profile._json.avatar_url
         }
-
-        console.log("Access token", accessToken);
-        console.log("Refresh token", refreshToken);
 
         done(null, user);
     }

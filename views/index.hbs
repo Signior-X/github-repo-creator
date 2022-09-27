@@ -1,12 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Github Repo Creator</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    {{ message }}
+
+<body class="h-screen w-screen bg-slate-300 flex">
+    <div class="container-sm m-auto">
+        {{#if username }}
+        <div class="flex font-sans bg-white shadow-md">
+            <div class="flex-none w-48 relative">
+                <img src="{{ avatar_url }}" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+            </div>
+            <form class="flex-auto p-6" id="new-repo-form">
+                <div class="flex flex-wrap">
+                    <h1 class="flex-auto text-lg font-semibold text-slate-900">
+                        {{ username }}
+                    </h1>
+                    <a class="py-2 h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900"
+                        href="/auth/logout">
+                        Logout
+                    </a>
+                </div>
+
+                <div class="flex items-baseline mt-4 mb-6 pt-1 border-b border-slate-200"></div>
+                <div class="flex space-x-4 mb-6 text-sm font-medium">
+                    <label for="repo-name" class="form-label inline-block mb-2 text-gray-700">Repo Name </label>
+                    <input type="text" class="
+                    form-control
+                    block
+                    w-full
+                    px-3
+                    py-1.5
+                    text-base
+                    font-normal
+                    text-gray-700
+                    bg-white bg-clip-padding
+                    border border-solid border-gray-300
+                    rounded
+                    transition
+                    ease-in-out
+                    m-0
+                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                " id="repo-name" placeholder="Repository Name" />
+                </div>
+                <div class="form-check mb-8">
+                    <input
+                        class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        type="checkbox" value="" id="repo-private">
+                    <label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
+                        Private Repo?
+                    </label>
+                </div>
+
+                <div class="flex space-x-4 mb-6 text-sm font-medium">
+                    <div class="flex-auto flex space-x-4">
+                        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" type="submit">
+                            Create
+                        </button>
+                        <button class="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900"
+                            type="button">
+                            View Repositories
+                        </button>
+                    </div>
+                </div>
+                {{!-- <p class="text-sm text-slate-700">
+                    Repository will be created!
+                </p> --}}
+            </form>
+        </div>
+        {{ else }}
+
+        <div style="min-width: 320px; min-height: 200px;" class="flex font-sans bg-white shadow-md">
+            <div class="m-auto">
+                <h1 class="text-4xl text-center pb-6"> Welcome </h1>
+                <a href="/auth/github/login" class="m-auto py-2 h-10 px-6 font-semibold rounded-md bg-black text-white">
+                    Login with Github
+                </a>
+            </div>
+        </div>
+
+        {{/if }}
+    </div>
+
+    <script>
+
+        async function postData(url = '', data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response; // parses JSON response into native JavaScript objects
+        }
+
+        document.getElementById('new-repo-form').onsubmit = function (e) {
+            e.preventDefault();
+
+            console.log("New Repo Form submit");
+            const repoName = document.getElementById('repo-name').value;
+            const repoPrivate = document.getElementById('repo-private').checked;
+
+            console.log(repoName, repoPrivate);
+
+            const data = {repoName, repoPrivate};
+            postData('/api/repos/', data).then(data => {
+                console.log(data);
+
+                if (data.status == 201) {
+                    alert("Repository created");
+                }
+            }).catch(err => {
+                console.log("Error came", err);
+            })
+        }
+    </script>
+
 </body>
+
 </html>
