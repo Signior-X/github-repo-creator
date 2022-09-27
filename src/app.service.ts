@@ -7,9 +7,9 @@ export class AppService {
     if (!req.user) {
       return 'Github Authentication Failed';
     } else {
-      req.session.username = req.user.username;
-      req.session.accessToken = req.user.accessToken;
-      req.session.avatar_url = req.user.avatar_url;
+      res.cookie('accessToken', req.user.accessToken);
+      res.cookie('avatar_url', req.user.avatar_url);
+      res.cookie('username', req.user.username);
 
       return res.redirect('/');
     }

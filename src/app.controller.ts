@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Req, Res, UseGuards, Request, Response } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from "@nestjs/passport";
 
@@ -9,13 +9,13 @@ export class AppController {
   @Get()
   @Render('index')
   indexPage(@Req() req) {
-    if (req.session && req.session.username) {
-      console.log("UserName", req.session.username);
-      console.log("Avatar", req.session.avatar_url);
+    if (req.cookies && req.cookies.username) {
+      console.log("UserName", req.cookies.username);
+      console.log("Avatar", req.cookies.avatar_url);
 
       return {
-        username: req.session.username,
-        avatar_url: req.session.avatar_url
+        username: req.cookies.username,
+        avatar_url: req.cookies.avatar_url
       }
     } else {
       console.log("No user id");
@@ -24,15 +24,15 @@ export class AppController {
   }
   
   @Post('api/repos')
-  createRepository(@Req() req, @Body() body, @Res() res) {
+  createRepository(@Req() req: Request, @Body() body: Body, @Res() res: Response) {
     console.log("Hello");
-    return { success : true }
-    return this.appService.createRepository(req, body);
+    return { hello: "world" };
   }
 
   @Get('auth/logout')
   logoutHandler(@Req() req, @Res() res) {
-    req.session.destroy();
+    res.clearCookie('username');
+    res.clearCookie('accessToken');
 
     return res.redirect('/');
   }

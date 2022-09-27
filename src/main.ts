@@ -2,25 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
+import * as cookieParser from 'cookie-parser';
 
-import * as session from 'express-session';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get(ConfigService);
-
-  app.use(
-    session({
-      secret: configService.get<string>('SESSION_SECRET'),
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        expires: new Date(Date.now() + (30 * 86400 * 1000))
-      }
-    }),
-  );
+  app.use(cookieParser());
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
