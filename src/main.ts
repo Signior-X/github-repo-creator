@@ -16,6 +16,9 @@ async function bootstrap() {
       secret: configService.get<string>('SESSION_SECRET'),
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        expires: new Date(Date.now() + (30 * 86400 * 1000))
+      }
     }),
   );
 

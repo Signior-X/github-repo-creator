@@ -24,8 +24,10 @@ export class AppController {
   }
   
   @Post('api/repos')
-  createRepository(@Body() body) {
-    this.appService.createRepository(body);
+  createRepository(@Req() req, @Body() body, @Res() res) {
+    console.log("Hello");
+    return { success : true }
+    return this.appService.createRepository(req, body);
   }
 
   @Get('auth/logout')

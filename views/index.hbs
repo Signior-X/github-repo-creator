@@ -119,7 +119,7 @@
 
             const data = {repoName, repoPrivate};
             postData('/api/repos/', data).then(data => {
-                console.log(data);
+                console.log("Data came: ", data);
 
                 if (data.status == 201) {
                     alert("Repository created");
