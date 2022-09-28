@@ -24,12 +24,35 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Project allows the users to get authenticated using Github OAuth, giving access to create repositories. The user can then create repositories using the API `/api/repos` by making a post request to it.
+
+Code Implementation Details:
+1. `github.strategy.ts` -> Uses Passport Github strategy to authenticate the user.
+2. `app.service.ts` -> Uses passport user to set required cookies. This file also contains the API Implementation of creating a repo using GitHub APIs.
+3. `app.module.ts` -> Contains all the configuration, pipelines, etc.
+4. `schema` folder -> Contains the request response objects for repo creation process.
+
+This Project is started from [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. 
 
 ## Installation
 
 ```bash
 $ npm install
+```
+
+
+#### Creating GitHub App
+
+First you have to [register](https://github.com/settings/applications/new) a new OAuth application in GitHub. Fill the details as show here in the image:
+![](./register_github_app.png)
+
+
+### Creating Environment file needed to run the app
+Copy the contents from `.env.sample` to `.env` file, and fill the required values.
+```
+SESSION_SECRET= (Anything random string for encryption)
+GITHUB_CLIENT_ID= (Github App created above and add client id from there)
+GITHUB_CLIENT_SECRET= (Github App created above and add client secret from there)
 ```
 
 ## Running the app
