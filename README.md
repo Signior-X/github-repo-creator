@@ -28,7 +28,7 @@ Project allows the users to get authenticated using Github OAuth, giving access 
 
 Code Implementation Details:
 1. `github.strategy.ts` -> Uses Passport Github strategy to authenticate the user.
-2. `app.service.ts` -> Uses passport user to set required cookies. This file also contains the API Implementation of creating a repo using GitHub APIs.
+2. `app.service.ts` -> Uses passport user to set required cookies. This file also contains the API Implementation of creating a repo using GitHub APIs with proper exception handling, validation checks, and response object.
 3. `app.module.ts` -> Contains all the configuration, pipelines, etc.
 4. `schema` folder -> Contains the request response objects for repo creation process.
 
@@ -44,7 +44,7 @@ $ npm install
 #### Creating GitHub App
 
 First you have to [register](https://github.com/settings/applications/new) a new OAuth application in GitHub. Fill the details as show here in the image:
-![](./register_github_app.png)
+![](./images/register_github_app.png)
 
 
 ### Creating Environment file needed to run the app
@@ -67,6 +67,14 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## How it looks
+![image](https://user-images.githubusercontent.com/56730716/192700683-4415e75c-cb07-4621-b290-d1f88b3b45b4.png)
+![image](https://user-images.githubusercontent.com/56730716/192700825-87de07f8-d5c6-41a4-838f-64dfadce7c4b.png)
+
+And we see it is created here
+![image](https://user-images.githubusercontent.com/56730716/192700900-1cb22a6e-d5b9-4f1f-a296-e193beedbd91.png)
+
 
 ## Test
 
