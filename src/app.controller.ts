@@ -40,6 +40,7 @@ export class AppController {
   @Get('auth/github/login')
   @UseGuards(AuthGuard('github'))
   async googleAuth(@Req() req) {
+    // Handled by passport itself
   }
 
   @Get('auth/github/callback')

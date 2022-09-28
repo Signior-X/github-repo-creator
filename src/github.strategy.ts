@@ -17,7 +17,8 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
 
     async validate(accessToken: string, refreshToken: string, profile: any,
         done: VerifyCallback): Promise<any> {
-
+        // Passport.js handles the sending of accessToken and profile after
+        // sucessfully verifying the user
         console.log("Profile got", profile);
 
         const user = {

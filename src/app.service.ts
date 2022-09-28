@@ -5,7 +5,13 @@ import { RepoResponse } from './schema/RepoResponse';
 
 @Injectable()
 export class AppService {
-  githubLogin(req, res) {
+  /**
+   * Handles cookies and session after successfull github login
+   * @param req - Request made for github login.
+   * @param res - Response based on req.user object from passport
+   * @returns Redirects the user to the home page
+   */
+  githubLogin(req: any, res: any) {
     if (!req.user) {
       return 'Github Authentication Failed';
     } else {
@@ -18,12 +24,12 @@ export class AppService {
   }
 
   /**
-   * Creates a new repository based on the RepoRequest object
+   * Creates a new repository based on the RepoRequest object.
    * @param req - Request object
    * @param body - RepoRequest object to create new repo
-   * @returns 
+   * @returns RepoResponse object giving idea wheather repo created successfully
    */
-  async createRepository(@Req() req,@Body() body: RepoRequest) : Promise<RepoResponse> {
+  async createRepository(req: any, body: RepoRequest) : Promise<RepoResponse> {
     // Data will automatically come validated from class-validator
     console.log("Create a repository", body);
 
@@ -73,6 +79,6 @@ export class AppService {
       return repoResponse;
     });
 
-    return repoResponse;
+    return result;
   }
 }
