@@ -5,10 +5,15 @@ import { join } from "path";
 import * as cookieParser from 'cookie-parser';
 
 import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Pipelines in between
+  app.useGlobalPipes(new ValidationPipe());
+
+  // Express related setups, cookies, templates
   const configService = app.get(ConfigService);
   app.use(cookieParser());
 
