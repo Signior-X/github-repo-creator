@@ -124,10 +124,8 @@
                 return data.json();
             }).then(jsonData => {
                 console.log("JSON data", jsonData);
-
-                if (data.status == 201) {
-                    alert("Repository created");
-                }
+                
+                alert(JSON.stringify(jsonData));
             }).
             catch (err => {
                 console.log("Error came", err);

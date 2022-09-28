@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable, Req } from '@nestjs/common';
 import axios from 'axios';
 import { RepoRequest } from './schema/RepoRequest';
 import { RepoResponse } from './schema/RepoResponse';
@@ -17,8 +17,18 @@ export class AppService {
     }
   }
 
-  async createRepository(req, body: RepoRequest) : Promise<RepoResponse> {
+  /**
+   * Creates a new repository based on the RepoRequest object
+   * @param req - Request object
+   * @param body - RepoRequest object to create new repo
+   * @returns 
+   */
+  async createRepository(@Req() req,@Body() body: RepoRequest) : Promise<RepoResponse> {
+    // Data will automatically come validated from class-validator
     console.log("Create a repository", body);
+
+    // Final response object that is going to be sent
+    const repoResponse = new RepoResponse();
 
     const accessToken = req.cookies.accessToken;
     console.log("Access Token", accessToken);
@@ -38,25 +48,31 @@ export class AppService {
       "Authorization": `Bearer ${accessToken}`
     }
 
-    let params: RequestInit = {
-      headers: headers,
-      method: "POSt",
-      body: JSON.stringify(data)
-    }
-
     let result = await axios({
       method: 'post',
       url: url,
       data: data,
       headers: headers
+    }).then(data => {
+      repoResponse.status = true;
+      repoResponse.description = data ? JSON.stringify(data.data) : "";
+
+      return repoResponse;
     }).catch(err => {
-      // TODO Handle error properly here
-      console.log(err);
+      // Repo creation failure or something wrong happened
+      repoResponse.status = false;
+
+      if (err && err.response && err.response.data) {
+        const errorResponseData = err.response.data;
+        repoResponse.err = JSON.stringify(errorResponseData);
+      } else {
+        // WE can't predict the error in this case
+        repoResponse.err = JSON.stringify(err);
+      }
+
+      return repoResponse;
     });
-    
-    const repoResponse = new RepoResponse();
-    repoResponse.status = true;
-    repoResponse.description = "Repo Successfully Created: " + JSON.stringify(data)
+
     return repoResponse;
   }
 }
