@@ -31,7 +31,6 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
-    "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
     "passport": "^0.6.0",
