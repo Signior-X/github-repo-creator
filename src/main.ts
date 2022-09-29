@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
+import hbs from "hbs";
 
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
@@ -20,6 +21,8 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
+
+  console.log(hbs);
 
   await app.listen(configService.get<number>("PORT"));
 }
