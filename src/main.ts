@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
 import cookieParser from 'cookie-parser';
-import hbs from "hbs";
+import hbs from 'hbs';
 
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
