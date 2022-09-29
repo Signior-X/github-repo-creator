@@ -1,5 +1,6 @@
 import { Body, Injectable, Req } from '@nestjs/common';
 import axios from 'axios';
+import { Repo } from './schema/Repo';
 import { RepoRequest } from './schema/RepoRequest';
 import { RepoResponse } from './schema/RepoResponse';
 
@@ -80,5 +81,29 @@ export class AppService {
     });
 
     return result;
+  }
+
+  /**
+   * Returns the list of all repositories of the user
+   * @param req - Request containing user information
+   */
+  getAllRepos(req: any): [Repo] | any {
+    const repos = [];
+    
+    const accessToken = req.cookies.accessToken;
+    const headers = {
+      "Accept": "application/vnd.github+json",
+      "Authorization": `Bearer ${accessToken}`
+    }
+
+    axios({
+      method: 'GET',
+      url: 'https://api.github.com/user/repos',
+      headers: headers
+    }).then(data => {
+      console.log(data);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 }
