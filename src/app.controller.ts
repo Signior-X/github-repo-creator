@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post, Render, Req, Res, UseGuards, Request, Response } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Req, Request } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthGuard } from "@nestjs/passport";
 import { RepoRequest } from './schema/RepoRequest';
 
 @Controller()
@@ -27,25 +26,5 @@ export class AppController {
   @Post('api/repos')
   async createRepo(@Req() req: Request, @Body() body: RepoRequest): Promise<any> {
     return await this.appService.createRepository(req, body);
-  }
-
-  @Get('auth/logout')
-  logoutHandler(@Req() req, @Res() res) {
-    res.clearCookie('username');
-    res.clearCookie('accessToken');
-
-    return res.redirect('/');
-  }
-
-  @Get('auth/github/login')
-  @UseGuards(AuthGuard('github'))
-  async googleAuth(@Req() req) {
-    // Handled by passport itself
-  }
-
-  @Get('auth/github/callback')
-  @UseGuards(AuthGuard('github'))
-  githubAuthRedirect(@Req() req, @Res() res) {
-    return this.appService.githubLogin(req, res);
   }
 }
